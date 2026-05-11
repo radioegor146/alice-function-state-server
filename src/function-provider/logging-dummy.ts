@@ -1,15 +1,10 @@
-import {FunctionArgument, FunctionProvider} from "./types";
-import {getLogger} from "../logger";
+import { getLogger } from '../logger'
+import { FunctionProvider } from './types'
 
 export class LoggingDummyFunctionProvider extends FunctionProvider {
-    private readonly logger = getLogger<LoggingDummyFunctionProvider>();
+  private readonly logger = getLogger<LoggingDummyFunctionProvider>()
 
-    constructor(name: string, description: string,
-                functionArguments: Record<string, FunctionArgument>) {
-        super(name, description, functionArguments);
-    }
-
-    async invoke(argumentValues: Record<string, number>): Promise<void> {
-        this.logger.info(`function '${this.getName()}' was called with ${JSON.stringify(argumentValues)}`)
-    }
+  async invoke (argumentValues: Record<string, number>): Promise<void> {
+    this.logger.info(`function '${this.getName()}' was called with ${JSON.stringify(argumentValues)}`)
+  }
 }

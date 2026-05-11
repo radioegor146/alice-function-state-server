@@ -10,8 +10,10 @@
     "start": "tsx src/main.ts"
   },
   "dependencies": {
+    "@bksp/style-guide": "^1.5.0",
     "@types/express": "^5.0.3",
     "dotenv": "^17.2.0",
+    "eslint": "^9.39.4",
     "express": "^5.1.0",
     "mqtt": "^5.13.2",
     "tslog": "^4.9.3",

@@ -1,55 +1,54 @@
-import z from "zod";
+import z from 'zod'
 
-export interface FunctionArgumentValueMinMaxConstraints {
-    type: "number-min-max";
-    argumentType: "number";
-    min: number;
-    max: number;
-}
-
-export interface FunctionArgumentValueVariantsConstraints {
-    type: "number-variants";
-    argumentType: "number";
-    variants: {
-        value: number;
-        description: string;
-    }[];
+export interface FunctionArgument {
+  constraints: FunctionArgumentValueConstraints;
+  description: string;
 }
 
 export type FunctionArgumentValueConstraints =
     FunctionArgumentValueMinMaxConstraints
-    | FunctionArgumentValueVariantsConstraints;
+    | FunctionArgumentValueVariantsConstraints
 
-export interface FunctionArgument {
+export interface FunctionArgumentValueMinMaxConstraints {
+  argumentType: 'number';
+  max: number;
+  min: number;
+  type: 'number-min-max';
+}
+
+export interface FunctionArgumentValueVariantsConstraints {
+  argumentType: 'number';
+  type: 'number-variants';
+  variants: {
     description: string;
-    constraints: FunctionArgumentValueConstraints;
+    value: number;
+  }[];
 }
 
 export interface FunctionProviderConfig {
-    name: string;
-    description: string;
+  description: string;
+  name: string;
 }
 
 export const configValidator = z.object({
-    description: z.string()
-});
+  description: z.string()
+})
 
 export abstract class FunctionProvider {
-    protected constructor(private readonly name: string, private readonly description: string,
-                private readonly functionArguments: Record<string, FunctionArgument>) {
-    }
+  protected constructor (private readonly name: string, private readonly description: string,
+    private readonly functionArguments: Record<string, FunctionArgument>) {}
 
-    getName(): string {
-        return this.name;
-    }
+  getArguments (): Record<string, FunctionArgument> {
+    return this.functionArguments
+  }
 
-    getDescription(): string {
-        return this.description;
-    }
+  getDescription (): string {
+    return this.description
+  }
 
-    getArguments(): Record<string, FunctionArgument> {
-        return this.functionArguments;
-    }
+  getName (): string {
+    return this.name
+  }
 
-    abstract invoke(argumentValues: Record<string, number>): Promise<void>;
+  abstract invoke (argumentValues: Record<string, number>): Promise<void>
 }

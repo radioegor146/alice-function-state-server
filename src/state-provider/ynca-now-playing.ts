@@ -1,22 +1,32 @@
-import {HTTPJSONStateProvider, configValidator as baseConfigValidator, HTTPJSONStateProviderConfig} from "./http-json";
+import z from 'zod'
 
-export type YncaNowPlayingStateProviderConfig = HTTPJSONStateProviderConfig;
+import { HTTPJSONStateProvider, HTTPJSONStateProviderConfig } from './http-json'
 
-export const configValidator = baseConfigValidator;
+export type YncaNowPlayingStateProviderConfig = HTTPJSONStateProviderConfig
+
+const yncaDataType = z.object({
+  media: z.object({
+    album: z.string().nullable().optional(),
+    artist: z.string().nullable().optional(),
+    title: z.string().nullable().optional(),
+  })
+})
 
 export class YncaNowPlayingStateProvider extends HTTPJSONStateProvider {
-    static create(config: YncaNowPlayingStateProviderConfig, dependencies: {}): YncaNowPlayingStateProvider {
-        return new YncaNowPlayingStateProvider(config.name, config.description, config.url)
-    }
+  constructor (name: string, description: string, url: string) {
+    super(name, description, url, rawData => {
+      const data = yncaDataType.parse(rawData)
+      if ((!data.media.album || data.media.album === 'N/A') &&
+                (!data.media.artist || data.media.artist === 'N/A') &&
+                (!data.media.title || data.media.title === 'N/A')) {
+        return 'nothing is playing right now'
+      }
+      return `${data.media.artist} - ${data.media.title}`
+    })
+  }
 
-    constructor(name: string, description: string, url: string) {
-        super(name, description, url, data => {
-            if ((!data.media.album || data.media.album == "N/A") &&
-                (!data.media.artist || data.media.artist == "N/A") &&
-                (!data.media.title || data.media.title == "N/A")) {
-                return "nothing is playing right now";
-            }
-            return `${data.media.artist} - ${data.media.title}`;
-        });
-    }
+  static create (config: YncaNowPlayingStateProviderConfig): YncaNowPlayingStateProvider {
+    return new YncaNowPlayingStateProvider(config.name, config.description, config.url)
+  }
 }
+export { configValidator } from './http-json'

@@ -1,25 +1,24 @@
-import z from "zod";
+import z from 'zod'
 
 export interface StateProviderConfig {
-    name: string;
-    description: string;
+  description: string;
+  name: string;
 }
 
 export const configValidator = z.object({
-    description: z.string()
-});
+  description: z.string()
+})
 
 export abstract class StateProvider {
-    protected constructor(private readonly name: string, private readonly description: string) {
-    }
+  protected constructor (private readonly name: string, private readonly description: string) {}
 
-    getName(): string {
-        return this.name;
-    }
+  getDescription (): string {
+    return this.description
+  }
 
-    getDescription(): string {
-        return this.description;
-    }
+  getName (): string {
+    return this.name
+  }
 
-    abstract getValue(): Promise<string>;
+  abstract getValue (): Promise<string>
 }

@@ -1,22 +1,24 @@
-import {StateProvider, StateProviderConfig, configValidator as baseConfigValidator} from "./types";
-import z from "zod";
+import z from 'zod'
+
+import { configValidator as baseConfigValidator, StateProvider, StateProviderConfig } from './types'
 
 export interface HTTPJSONStateProviderConfig extends StateProviderConfig {
-    url: string;
+  url: string;
 }
 
 export const configValidator = z.intersection(z.object({
-    url: z.string()
-}), baseConfigValidator);
+  url: z.string()
+}), baseConfigValidator)
 
 export class HTTPJSONStateProvider extends StateProvider {
-    constructor(name: string, description: string,
-                private readonly url: string,
-                private readonly extractor: (data: any) => string) {
-        super(name, description);
-    }
+  constructor (name: string, description: string,
+    private readonly url: string,
+    private readonly extractor: (data: unknown) => string) {
+    super(name, description)
+  }
 
-    async getValue(): Promise<string> {
-        return this.extractor(await (await fetch(this.url)).json());
-    }
+  async getValue (): Promise<string> {
+    const response = await fetch(this.url)
+    return this.extractor(await response.json())
+  }
 }
