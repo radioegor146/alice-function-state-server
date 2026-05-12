@@ -119,7 +119,7 @@ for (const [name, providerConfig] of Object.entries(config.functionProviders)) {
   logger.info(`Registered '${name}' function provider`)
 }
 
-app.get('/state', (_, response) => {
+app.put('/state', (_, response) => {
   response.status(200).json({})
 })
 
