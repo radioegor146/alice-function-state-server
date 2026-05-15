@@ -34,6 +34,10 @@ export const configValidator = z.intersection(z.object({
           description: z.string(),
           value: z.number()
         }))
+      }),
+      z.object({
+        argumentType: z.literal('string'),
+        type: z.literal('string-not-empty')
       })
     ]),
     description: z.string()
