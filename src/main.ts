@@ -166,7 +166,7 @@ app.get('/functions', (_, response) => {
 
 const functionCallType = z.object({
   name: z.string(),
-  parameters: z.record(z.string(), z.number())
+  parameters: z.record(z.string(), z.union([z.string(), z.number()]))
 })
 
 app.patch('/functions', (request, response) => {

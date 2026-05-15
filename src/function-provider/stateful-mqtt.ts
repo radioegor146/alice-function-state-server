@@ -63,7 +63,7 @@ export class StatefulMQTTFunctionProvider extends FunctionProvider {
       config.stateArgument, dependencies.mqtt, config.topic)
   }
 
-  async invoke (argumentValues: Record<string, number>): Promise<void> {
+  async invoke (argumentValues: Record<string, number | string>): Promise<void> {
     if (argumentValues['state'] === undefined) {
       this.logger.warn(`Called '${this.getName()}' but without state`)
       return

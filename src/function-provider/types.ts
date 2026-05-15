@@ -50,5 +50,5 @@ export abstract class FunctionProvider {
     return this.name
   }
 
-  abstract invoke (argumentValues: Record<string, number>): Promise<void>
+  abstract invoke (argumentValues: Record<string, number | string>): Promise<void>
 }
